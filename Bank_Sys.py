@@ -1,8 +1,5 @@
 import csv
 
-
-
-
 if __name__=="__main__":
     a=1
     with open('BankSystem.csv', 'r', newline='') as inline:
@@ -20,10 +17,11 @@ if __name__=="__main__":
                 int_deposit = int(input("Enter Initial Deposit Amount(minimum $100):"))
                 if int_deposit >= 100:
                     st = str(counter) + '.csv'
-                    with open(st, 'a', newline='') as o_file:
+                    with open(st, 'w', newline='') as o_file:
                         writer_r = csv.writer(o_file)
-                        writer_r.writerow(
-                            [f'Welcome To Online Banking\nYour Account No:{counter}has been created\nInitial Amount Added ${int_deposit}'])
+                        writer_r.writerow([f'Welcome To Online Banking'])
+                        writer_r.writerow([f'Your Account No:{counter} has been created'])
+                        writer_r.writerow([f'Initial Amount Added ${int_deposit}'])
                     with open('BankSystem.csv', 'a', newline='') as outfile:
                         fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
@@ -49,7 +47,7 @@ if __name__=="__main__":
                 if not a:
                     print("Account number and Password is not Matching!\n go for'2' once again Typed Your Account Number and Password")
                 while a:
-                    user_i=input("\n'1' for:Check Balance\n'2' for:Deposit Money\n'3' for Withdraw Money\n'4' for:Transfer Money\n'5' for:Logout\n'Enter Your Choice':")
+                    user_i=input("\n'1' for:Check Balance\n'2' for:Deposit Money\n'3' for Withdraw Money\n'4' for:Transfer Money\n'5' for:Passbook print\n'6' for:Logout\n'Enter Your Choice':")
                     match user_i:
                         case '1':
                             with open('BankSystem.csv', 'r', newline='') as inline:
@@ -58,7 +56,6 @@ if __name__=="__main__":
                                     if acc_no == int(row['Account Number']):
                                         print("Balance Amount:$",int(row['Ini_Deposit']))
                                         break
-
                         case '2':
                             rows=[]
                             res=0
@@ -123,6 +120,7 @@ if __name__=="__main__":
                                         A=True
                                         a=True
                                     else:
+                                        res=0
                                         rows = []
                                         with open('BankSystem.csv', 'r', newline='') as inline:
                                             reader = csv.DictReader(inline)
@@ -133,6 +131,10 @@ if __name__=="__main__":
                                                         row['Ini_Deposit'] = str(res)
                                                         print(f"Amount {amount_send} detected!")
                                                         a = True
+                                                        st = str(acc_no) + '.csv'
+                                                        with open(st, 'a', newline='') as o_file:
+                                                            writer_r = csv.writer(o_file)
+                                                            writer_r.writerow([f'Transfer of {amount_send} for Account No:{acc_no1} is success Balance:${res} '])
                                                 rows.append(row)
                                         with open('BankSystem.csv', 'w', newline='') as inline:
                                             fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
@@ -157,11 +159,21 @@ if __name__=="__main__":
                                                 writer.writeheader()
                                                 writer.writerows(rows)
                                             print("Transformed  successfully.")
+                                            st = str(acc_no1) + '.csv'
+                                            with open(st, 'a', newline='') as o_file:
+                                                writer_r = csv.writer(o_file)
+                                                writer_r.writerow([f'Transfer of {amount_send} form Account No:{acc_no} to you is success Balance:${res} '])
                             else:
                                 print("Account Number is yours\n Enter correct Account Number!")
                                 A=True
                                 a=True
                         case '5':
+                            st = str(acc_no) + '.csv'
+                            with open(st, 'r', newline='') as o_file:
+                                reader=csv.reader(o_file)
+                                for i in reader:
+                                    print(i)
+                        case '6':
                             print("Log outing!!")
                             break
             case 'exit':
