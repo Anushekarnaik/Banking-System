@@ -1,8 +1,8 @@
 # Banking-System
 🔁 Startup Process
 It counts how many users already exist by reading the BankSystem.csv file.
-
 Initializes a global counter that acts as the next account number.
+
 
 🧾 Main Menu Options
 The program repeatedly shows a menu with:
