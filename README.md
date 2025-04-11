@@ -6,8 +6,11 @@ Initializes a global counter that acts as the next account number.
 
 🧾 Main Menu Options
 The program repeatedly shows a menu with:
+
 1 - Account Creation
+
 2 - Log In
+
 exit - Exit the Program
 
 ✅ 1. Account Creation
