@@ -1,5 +1,8 @@
 import csv
-import os
+
+
+
+
 if __name__=="__main__":
     a=1
     with open('BankSystem.csv', 'r', newline='') as inline:
@@ -12,21 +15,27 @@ if __name__=="__main__":
         user_input=input("\n'1' for:Account Creation\n'2' for:Log In\n'exit' for:Exit the Program\n'Enter Your Choice':")
         match user_input:
             case '1':
-                holder_name=input("Enter your name:")
-                password=input("Enter you password:")
-                int_deposit=int(input("Enter Initial Deposit Amount(minimum $100):"))
-                if int_deposit>=100:
+                holder_name = input("Enter your name:")
+                password = input("Enter you password:")
+                int_deposit = int(input("Enter Initial Deposit Amount(minimum $100):"))
+                if int_deposit >= 100:
+                    st = str(counter) + '.csv'
+                    with open(st, 'a', newline='') as o_file:
+                        writer_r = csv.writer(o_file)
+                        writer_r.writerow(
+                            [f'Welcome To Online Banking\nYour Account No:{counter}has been created\nInitial Amount Added ${int_deposit}'])
                     with open('BankSystem.csv', 'a', newline='') as outfile:
                         fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
-                        if counter==1:
+                        if counter == 1:
                             writer.writeheader()
                         writer.writerow({'Account Number': counter, 'Name': holder_name, 'Password': password,
                                          'Ini_Deposit': int_deposit})
-                        print(f"Processed data written'.")
-                        counter+=1
+                        print(f"Processed data written to File.")
+                        counter += 1
                 else:
                     print("Minimum $100 you have Deposit while creating account")
+
             case '2':
                 a=False
                 acc_no=int(input("Enter you Account Number to log In:"))
@@ -47,16 +56,19 @@ if __name__=="__main__":
                                 reader = csv.DictReader(inline)
                                 for row in reader:
                                     if acc_no == int(row['Account Number']):
-                                        print("Balance Amount:",int(row['Ini_Deposit']))
+                                        print("Balance Amount:$",int(row['Ini_Deposit']))
                                         break
+
                         case '2':
                             rows=[]
-                            dep_amount=int(input("Enter Deposit Amount"))
+                            res=0
+                            dep_amount=int(input("Enter Deposit Amount:$"))
                             with open('BankSystem.csv', 'r', newline='') as inline:
                                 reader = csv.DictReader(inline)
                                 for row in reader:
                                     if acc_no == int(row['Account Number']):
                                         res=int(row['Ini_Deposit'])+dep_amount
+                                        print("Balance Amount After Deposit:$",res)
                                         row['Ini_Deposit']=str(res)
                                     rows.append(row)
                             with open('BankSystem.csv', 'w', newline='') as inline:
@@ -65,7 +77,12 @@ if __name__=="__main__":
                                 writer.writeheader()
                                 writer.writerows(rows)
                             print("Deposit updated successfully.")
+                            st = str(acc_no) + '.csv'
+                            with open(st, 'a', newline='') as o_file:
+                                writer_r = csv.writer(o_file)
+                                writer_r.writerow([f'Deposit of {dep_amount} is success Balance:${res} '])
                         case '3':
+                            res=0
                             with_draw=int(input("Enter the Withdraw Amount:"))
                             rows = []
                             with open('BankSystem.csv', 'r', newline='') as inline:
@@ -76,6 +93,7 @@ if __name__=="__main__":
                                             res = int(row['Ini_Deposit']) - with_draw
                                             row['Ini_Deposit'] = str(res)
                                             print(f"Withdraw of Amount {with_draw} successful!")
+                                            print("Balance Amount After Withdrawal:$", res)
                                         else:
                                             print("Insufficient Fund!!")
                                     rows.append(row)
@@ -84,57 +102,65 @@ if __name__=="__main__":
                                 writer = csv.DictWriter(inline, fieldnames=fieldnames)
                                 writer.writeheader()
                                 writer.writerows(rows)
+                            st = str(acc_no) + '.csv'
+                            with open(st, 'a', newline='') as o_file:
+                                writer_r = csv.writer(o_file)
+                                writer_r.writerow([f'Withdraw of {with_draw} is success Balance:${res} '])
                         case '4':
                             a = False
                             A= False
                             amount_send = int(input("Enter the Transfer Amount:"))
                             acc_no1=int(input("Enter the Account number to send:"))
-                            with open('BankSystem.csv', 'r', newline='') as inline:
-                                reader = csv.DictReader(inline)
-                                for row in reader:
-                                    if acc_no1 == int(row['Account Number']):
+                            if acc_no!=acc_no1:
+                                with open('BankSystem.csv', 'r', newline='') as inline:
+                                    reader = csv.DictReader(inline)
+                                    for row in reader:
+                                        if acc_no1 == int(row['Account Number']):
+                                            A=True
+                                            break
+                                    if not A:
+                                        print("You entered Account Number is not available!")
                                         A=True
-                                        break
-                                if not A:
-                                    print("You entered Account Number is not available!")
-                                    A=True
-                                    a=True
-                                else:
-                                    rows = []
-                                    with open('BankSystem.csv', 'r', newline='') as inline:
-                                        reader = csv.DictReader(inline)
-                                        for row in reader:
-                                            if acc_no == int(row['Account Number']):
-                                                if amount_send < int(row['Ini_Deposit']):
-                                                    res = int(row['Ini_Deposit']) - amount_send
-                                                    row['Ini_Deposit'] = str(res)
-                                                    print(f"Amount {amount_send} detected!")
-                                                    a = True
-                                            rows.append(row)
-                                    with open('BankSystem.csv', 'w', newline='') as inline:
-                                        fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
-                                        writer = csv.DictWriter(inline, fieldnames=fieldnames)
-                                        writer.writeheader()
-                                        writer.writerows(rows)
-                                    if not a:
-                                        print("Insufficient Fund to Transform the Amount!!")
                                         a=True
                                     else:
                                         rows = []
                                         with open('BankSystem.csv', 'r', newline='') as inline:
                                             reader = csv.DictReader(inline)
                                             for row in reader:
-                                                if acc_no1 == int(row['Account Number']):
-                                                    res = int(row['Ini_Deposit']) + amount_send
-                                                    row['Ini_Deposit'] = str(res)
+                                                if acc_no == int(row['Account Number']):
+                                                    if amount_send < int(row['Ini_Deposit']):
+                                                        res = int(row['Ini_Deposit']) - amount_send
+                                                        row['Ini_Deposit'] = str(res)
+                                                        print(f"Amount {amount_send} detected!")
+                                                        a = True
                                                 rows.append(row)
                                         with open('BankSystem.csv', 'w', newline='') as inline:
                                             fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
                                             writer = csv.DictWriter(inline, fieldnames=fieldnames)
                                             writer.writeheader()
                                             writer.writerows(rows)
-                                        print("Transformed  successfully.")
-                                    
+                                        if not a:
+                                            print("Insufficient Fund to Transform the Amount!!")
+                                            a=True
+                                        else:
+                                            rows = []
+                                            with open('BankSystem.csv', 'r', newline='') as inline:
+                                                reader = csv.DictReader(inline)
+                                                for row in reader:
+                                                    if acc_no1 == int(row['Account Number']):
+                                                        res = int(row['Ini_Deposit']) + amount_send
+                                                        row['Ini_Deposit'] = str(res)
+                                                    rows.append(row)
+                                            with open('BankSystem.csv', 'w', newline='') as inline:
+                                                fieldnames = ['Account Number', 'Name', 'Password', 'Ini_Deposit']
+                                                writer = csv.DictWriter(inline, fieldnames=fieldnames)
+                                                writer.writeheader()
+                                                writer.writerows(rows)
+                                            print("Transformed  successfully.")
+                            else:
+                                print("Account Number is yours\n Enter correct Account Number!")
+                                A=True
+                                a=True
                         case '5':
                             print("Log outing!!")
                             break
