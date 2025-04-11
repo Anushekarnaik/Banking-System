@@ -16,8 +16,8 @@ exit - Exit the Program
 ✅ 1. Account Creation
 User enters name, password, and an initial deposit (must be at least $100).
 A new .csv file is created per user (e.g., 5.csv) to log their transactions.
-Data is also appended to BankSystem.csv with:
-Account Number
+Data is also appended to BankSystem.csv with:\n
+Account Number\n
 Name
 Password
 Initial Deposit
