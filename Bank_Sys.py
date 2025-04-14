@@ -86,7 +86,7 @@ if __name__=="__main__":
                                 reader = csv.DictReader(inline)
                                 for row in reader:
                                     if acc_no == int(row['Account Number']):
-                                        if with_draw<int(row['Ini_Deposit']):
+                                        if with_draw<=int(row['Ini_Deposit']):
                                             res = int(row['Ini_Deposit']) - with_draw
                                             row['Ini_Deposit'] = str(res)
                                             print(f"Withdraw of Amount {with_draw} successful!")
@@ -126,7 +126,7 @@ if __name__=="__main__":
                                             reader = csv.DictReader(inline)
                                             for row in reader:
                                                 if acc_no == int(row['Account Number']):
-                                                    if amount_send < int(row['Ini_Deposit']):
+                                                    if amount_send <= int(row['Ini_Deposit']):
                                                         res = int(row['Ini_Deposit']) - amount_send
                                                         row['Ini_Deposit'] = str(res)
                                                         print(f"Amount {amount_send} detected!")
