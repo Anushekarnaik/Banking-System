@@ -4,11 +4,11 @@ It counts how many users already exist by reading the BankSystem.csv file.
 Initializes a global counter that acts as the next account number.
 
 
-🧾 Main Menu Options< br / >
-The program repeatedly shows a menu with:< br / >
-1 - Account Creation< br / >
-2 - Log In< br / >
-exit - Exit the Program< br / >
+🧾 Main Menu Options  
+The program repeatedly shows a menu with:  
+1 - Account Creation  
+2 - Log In  
+exit - Exit the Program  
 
 ✅ 1. Account Creation
 User enters name, password, and an initial deposit (must be at least $100).
